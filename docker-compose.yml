@@ -1,16 +1,26 @@
 version: "3.12"
  
 services:
- backend:
-  build: .
-  container_name: weather_backend
-  command: python manage.py runserver 0.0.0.0:8000
-  volumes: 
-   - .:/app
-  ports:
-   - 8000:8000
-  environment:
-   - DJANGO_SUPERUSER_USERNAME=admin
-   - DJANGO_SUPERUSER_PASSWORD=admin
-   - DJANGO_SUPERUSER_EMAIL=admin@test.com
+  backend:
+    build: .
+    container_name: weather_backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes: 
+      - .:/app
+    ports:
+      - 8000:8000
+    environment:
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@test.com
   
+  frontend:
+    build: ./frontend
+    container_name: weather_frontend
+    command: npm run dev -- --host 0.0.0.0
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    stdin_open: true
+    tty: true
